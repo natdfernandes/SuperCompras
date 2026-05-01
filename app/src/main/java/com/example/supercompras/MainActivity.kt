@@ -9,9 +9,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -30,6 +32,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.ui.Alignment
 import com.example.supercompras.ui.theme.Typography
 import androidx.compose.ui.text.style.TextAlign
+import com.example.supercompras.ui.theme.Coral
 import com.example.supercompras.ui.theme.Marinho
 
 class MainActivity : ComponentActivity() {
@@ -75,7 +78,7 @@ fun ItemDaLista(modifier: Modifier = Modifier) {
             )
             Text(
                 text = "Suco",
-                modifier = Modifier,
+                modifier = Modifier.weight(1f),
                 style = Typography.bodyMedium,
                 textAlign = TextAlign.Start
             )
@@ -87,7 +90,12 @@ fun ItemDaLista(modifier: Modifier = Modifier) {
             )
             Icone(Icons.Default.Edit, modifier = Modifier.size(16.dp))
         }
-        Text("Segunda-feira (31/10/2026) às 08:30")
+        Text(
+            "Segunda-feira (31/10/2026) às 08:30",
+            Modifier.padding(top = 8.dp),
+            style = Typography.labelSmall,
+
+        )
     }
 }
 

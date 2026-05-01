@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -40,6 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import com.example.supercompras.ui.theme.Typography
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import com.example.supercompras.ui.theme.Coral
 import com.example.supercompras.ui.theme.Marinho
 
@@ -50,11 +52,17 @@ class MainActivity : ComponentActivity() {
         setContent {
             SuperComprasTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column(verticalArrangement = Arrangement.Top, modifier = Modifier.padding(innerPadding)) {
+                    Column(
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(innerPadding)
+                    ) {
                         ImagemTopo()
                         AdicionarItem()
+                        BotaoSalvarItem(onClick = {})
                         Titulo(
-                            texto = "Lista de compras")
+                            texto = "Lista de compras"
+                        )
                         ItemDaLista()
                         Titulo(texto = "Comprado")
                     }
@@ -66,24 +74,43 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AdicionarItem(modifier: Modifier = Modifier) {
-    var texto = rememberSaveable{mutableStateOf("")}
+    var texto = rememberSaveable { mutableStateOf("") }
     OutlinedTextField(
         value = texto.value,
-        onValueChange = {texto.value = it},
-        placeholder = {Text(text = "Digite o item que deseja adicionar",
-            color = Color.Gray,
-            style = Typography.bodyMedium
-        )
-                      },
-        modifier = modifier.fillMaxWidth().padding(8.dp),
+        onValueChange = { texto.value = it },
+        placeholder = {
+            Text(
+                text = "Digite o item que deseja adicionar",
+                color = Color.Gray,
+                style = Typography.bodyMedium
+            )
+        },
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(8.dp),
         singleLine = true,
         shape = RoundedCornerShape(24.dp)
     )
 }
+
+@Composable
+fun BotaoSalvarItem(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Button(
+        shape = RoundedCornerShape(24.dp),
+        onClick = onClick,
+        modifier = modifier) {
+        Text(
+            text = "Salvar item",
+            color = Color.White,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp))
+    }
+}
+
 @Composable
 fun Titulo(texto: String, modifier: Modifier = Modifier) {
     Text(text = texto, style = typography.headlineLarge, modifier = modifier)
 }
+
 @Composable
 fun ItemDaLista(modifier: Modifier = Modifier) {
     Column(verticalArrangement = Arrangement.Top, modifier = modifier) {
@@ -117,7 +144,7 @@ fun ItemDaLista(modifier: Modifier = Modifier) {
             Modifier.padding(top = 8.dp),
             style = Typography.labelSmall,
 
-        )
+            )
     }
 }
 
@@ -146,11 +173,20 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
+private fun BotaoSalvarItemPreview() {
+    SuperComprasTheme() {
+        BotaoSalvarItem(onClick = {})
+    }
+    
+}
+
+@Preview
+@Composable
 private fun AdicionarItemPreview() {
     SuperComprasTheme() {
         AdicionarItem()
     }
-    
+
 }
 
 @Preview

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -29,10 +30,14 @@ import androidx.compose.ui.unit.dp
 import com.example.supercompras.ui.theme.SuperComprasTheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
 import com.example.supercompras.ui.theme.Typography
 import androidx.compose.ui.text.style.TextAlign
 import com.example.supercompras.ui.theme.Coral
@@ -61,11 +66,18 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AdicionarItem(modifier: Modifier = Modifier) {
-    var texto = remember {mutableStateOf("")}
-    TextField(
-        value = "",
+    var texto = rememberSaveable{mutableStateOf("")}
+    OutlinedTextField(
+        value = texto.value,
         onValueChange = {texto.value = it},
-        modifier = modifier
+        placeholder = {Text(text = "Digite o item que deseja adicionar",
+            color = Color.Gray,
+            style = Typography.bodyMedium
+        )
+                      },
+        modifier = modifier.fillMaxWidth().padding(8.dp),
+        singleLine = true,
+        shape = RoundedCornerShape(24.dp)
     )
 }
 @Composable

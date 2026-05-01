@@ -29,6 +29,9 @@ import androidx.compose.ui.unit.dp
 import com.example.supercompras.ui.theme.SuperComprasTheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import com.example.supercompras.ui.theme.Typography
 import androidx.compose.ui.text.style.TextAlign
@@ -42,14 +45,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             SuperComprasTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column(verticalArrangement = Arrangement.Top) {
-                        ImagemTopo(modifier = Modifier.padding(innerPadding))
+                    Column(verticalArrangement = Arrangement.Top, modifier = Modifier.padding(innerPadding)) {
+                        ImagemTopo()
+                        AdicionarItem()
                         Titulo(
-                            texto = "Lista de compras",
-                            modifier = Modifier.padding(innerPadding)
-                        )
-                        ItemDaLista(modifier = Modifier.padding(innerPadding))
-                        Titulo(texto = "Comprado", modifier = Modifier.padding(innerPadding))
+                            texto = "Lista de compras")
+                        ItemDaLista()
+                        Titulo(texto = "Comprado")
                     }
                 }
             }
@@ -58,10 +60,18 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+fun AdicionarItem(modifier: Modifier = Modifier) {
+    var texto = remember {mutableStateOf("")}
+    TextField(
+        value = "",
+        onValueChange = {texto.value = it},
+        modifier = modifier
+    )
+}
+@Composable
 fun Titulo(texto: String, modifier: Modifier = Modifier) {
     Text(text = texto, style = typography.headlineLarge, modifier = modifier)
 }
-
 @Composable
 fun ItemDaLista(modifier: Modifier = Modifier) {
     Column(verticalArrangement = Arrangement.Top, modifier = modifier) {
@@ -120,6 +130,15 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         text = "Hello Natalia!",
         modifier = modifier
     )
+}
+
+@Preview
+@Composable
+private fun AdicionarItemPreview() {
+    SuperComprasTheme() {
+        AdicionarItem()
+    }
+    
 }
 
 @Preview

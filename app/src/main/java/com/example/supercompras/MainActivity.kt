@@ -5,10 +5,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -25,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.example.supercompras.ui.theme.SuperComprasTheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Checkbox
+import androidx.compose.ui.Alignment
 import com.example.supercompras.ui.theme.Typography
 import androidx.compose.ui.text.style.TextAlign
 import com.example.supercompras.ui.theme.Marinho
@@ -36,7 +39,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             SuperComprasTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column {
+                    Column(verticalArrangement = Arrangement.Top) {
                         ImagemTopo(modifier = Modifier.padding(innerPadding))
                         Titulo(
                             texto = "Lista de compras",
@@ -58,20 +61,33 @@ fun Titulo(texto: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun ItemDaLista(modifier: Modifier = Modifier) {
-    Row {
-        Checkbox(
-            checked = false,
-            onCheckedChange = {},
-            modifier = modifier.padding(end = 8.dp)
-        )
-        Text(
-            text = "Suco",
-            modifier = modifier,
-            style = Typography.bodyMedium,
-            textAlign = TextAlign.Center
-        )
-        Icone(Icons.Default.Delete, modifier = modifier.size(16.dp))
-        Icone(Icons.Default.Edit, modifier = modifier.size(16.dp))
+    Column(verticalArrangement = Arrangement.Top, modifier = modifier) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Checkbox(
+                checked = false,
+                onCheckedChange = {},
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .requiredSize(24.dp)
+            )
+            Text(
+                text = "Suco",
+                modifier = Modifier,
+                style = Typography.bodyMedium,
+                textAlign = TextAlign.Start
+            )
+            Icone(
+                Icons.Default.Delete,
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .size(16.dp)
+            )
+            Icone(Icons.Default.Edit, modifier = Modifier.size(16.dp))
+        }
+        Text("Segunda-feira (31/10/2026) às 08:30")
     }
 }
 

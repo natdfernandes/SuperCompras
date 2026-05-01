@@ -1,5 +1,6 @@
 package com.example.supercompras
 
+import android.content.ClipData
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -35,9 +36,11 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.TextField
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
@@ -64,15 +67,15 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ListaDeCompras(modifier: Modifier = Modifier) {
-    var listaDeItens = rememberSaveable { mutableListOf<ItemCompra>()}
+    var listaDeItens by rememberSaveable {mutableStateOf(listOf<ItemCompra>())}
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
         ImagemTopo()
-        AdicionarItem(aoSalvarItem = {
-            listaDeItens.add(ItemCompra(texto = "suco"))
+        AdicionarItem(aoSalvarItem = { textNovo ->
+            listaDeItens = listaDeItens + ItemCompra(textNovo)
         })
         Spacer(modifier = Modifier.height(48.dp))
         Titulo(
@@ -80,7 +83,7 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
         )
         Column {
             listaDeItens.forEach { item ->
-                ItemDaLista(item    )
+                ItemDaLista(item)
             }
         }
         Titulo(texto = "Comprado")
@@ -112,6 +115,7 @@ fun AdicionarItem(aoSalvarItem: (texto: String) -> Unit, modifier: Modifier = Mo
         shape = RoundedCornerShape(24.dp),
         onClick = {
             aoSalvarItem(texto.value)
+            texto.value = ""
                   },
         modifier = modifier) {
         Text(

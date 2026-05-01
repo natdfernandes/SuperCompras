@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -21,6 +23,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.supercompras.ui.theme.SuperComprasTheme
 import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.Checkbox
+import com.example.supercompras.ui.theme.Typography
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,13 +33,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             SuperComprasTheme {
                 Scaffold( modifier = Modifier.fillMaxSize() ) { innerPadding ->
-
-                    //ImagemTopo(modifier = Modifier.padding(innerPadding))
-                    Titulo(modifier = Modifier.padding(innerPadding))
-                    //Icone(
-                    //modifier = Modifier.padding(innerPadding),
-                    //icone = Icons.Default.Delete
-                    //)
+                    Column {
+                        ImagemTopo(modifier = Modifier.padding(innerPadding))
+                        Titulo(texto= "Lista de compras", modifier = Modifier.padding(innerPadding))
+                        ItemDaLista(modifier = Modifier.padding(innerPadding))
+                        Titulo(texto = "Comprado", modifier =  Modifier.padding(innerPadding))
+                    }
                 }
             }
         }
@@ -43,8 +46,16 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Titulo(modifier: Modifier = Modifier) {
-    Text(text = "Lista de Compras", modifier = modifier, style = typography.headlineLarge)
+fun Titulo(texto: String ,modifier: Modifier = Modifier) {
+    Text(text = texto, style = typography.headlineLarge, modifier = modifier)
+}
+
+@Composable
+fun ItemDaLista(modifier: Modifier = Modifier) {
+    Row {
+        Checkbox(checked = false, onCheckedChange = {}, modifier = modifier)
+        Text(text = "Suco", modifier = modifier, style = Typography.bodyMedium)
+    }
 }
 
 @Composable
@@ -70,6 +81,14 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
+private fun ItemDaListaPreview() {
+  SuperComprasTheme {
+      ItemDaLista()
+  }
+}
+
+@Preview
+@Composable
 private fun IconeEditPreview() {
     SuperComprasTheme() {
         Icone(icone = Icons.Default.Delete)
@@ -90,7 +109,7 @@ private fun ImagemTopoPreview() {
 @Composable
 private fun TituloPreview() {
     SuperComprasTheme() {
-        Titulo()
+        Titulo(texto = "Lista de compras")
     }
 
 }

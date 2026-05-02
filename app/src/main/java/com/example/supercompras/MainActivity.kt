@@ -105,10 +105,46 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
             }
         }
         Titulo(texto = "Comprado")
+
+
     }
     
 }
+@Composable
+fun ListaDeItems(
+    listaDeItens: List<ItemCompra>,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        listaDeItens.forEach { item ->
+            ItemDaLista(
+                item = item,
+                aoMudarStatus = {
+                    listaDeItens = listaDeItens.map { itemSelecionado ->
+                        if (it == itemSelecionado) {
+                            it.copy(foiComprado = !it.foiComprado)
+                        } else {
+                            it
+                        }
+                    }
+                },
+                aoRemoverItem = { itemRemovido ->
+                    listaDeItens = listaDeItens - itemRemovido
+                },
+                aoEditarItem = { itemEditado ->
+                    listaDeItens = listaDeItens.map { itemAtual ->
+                        if (itemAtual == itemEditado) {
+                            itemEditado.copy(texto = itemEditado.texto)
+                        } else {
+                            itemAtual
+                        }
+                    }
+                }
+            )
+        }
+    }
 
+}
 @Composable
 fun AdicionarItem(aoSalvarItem: (texto: String) -> Unit, modifier: Modifier = Modifier) {
     var texto = rememberSaveable { mutableStateOf("") }

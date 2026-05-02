@@ -78,13 +78,13 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
             texto = "Lista de compras"
         )
         ListaDeItems(
-            listaDeItens = listaDeItens,
-            aoMudarStatus = {
-                listaDeItens = listaDeItens.map { itemSelecionado ->
-                    if (it == itemSelecionado) {
-                        it.copy(foiComprado = !it.foiComprado)
+            lista = listaDeItens,
+            aoMudarStatus = { itemSelecionado ->
+                listaDeItens = listaDeItens.map { itemMap ->
+                    if (itemSelecionado == itemMap) {
+                        itemSelecionado.copy(foiComprado = !itemSelecionado.foiComprado)
                     } else {
-                        it
+                        itemMap
                     }
                 }
             },
@@ -94,7 +94,7 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
             aoEditarItem = { itemEditado ->
                 listaDeItens = listaDeItens.map { itemAtual ->
                     if (itemAtual == itemEditado) {
-                        itemEditado.copy(texto = itemEditado.texto)
+                        itemAtual.copy(texto = itemEditado.texto)
                     } else {
                         itemAtual
                     }
@@ -109,14 +109,14 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
 }
 @Composable
 fun ListaDeItems(
-    listaDeItens: List<ItemCompra>,
+    lista: List<ItemCompra>,
     aoMudarStatus: (item: ItemCompra) -> Unit = {},
     aoRemoverItem: (item: ItemCompra) -> Unit,
     aoEditarItem: (item: ItemCompra) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-        listaDeItens.forEach { item ->
+        lista.forEach { item ->
             ItemDaLista(
                 item = item,
                 aoMudarStatus = aoMudarStatus,

@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import com.example.supercompras.ui.theme.Marinho
 import com.example.supercompras.ui.theme.SuperComprasTheme
 import com.example.supercompras.ui.theme.Typography
+import kotlin.collections.map
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,34 +77,30 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
         Titulo(
             texto = "Lista de compras"
         )
-        Column {
-            listaDeItens.forEach { item ->
-                ItemDaLista(
-                    item = item,
-                    aoMudarStatus = {
-                        listaDeItens = listaDeItens.map{ itemSelecionado ->
-                            if (it == itemSelecionado){
-                                it.copy(foiComprado = !it.foiComprado)
-                            }else {
-                                it
-                            }
-                        }
-                    },
-                    aoRemoverItem = { itemRemovido ->
-                        listaDeItens = listaDeItens - itemRemovido
-                    },
-                    aoEditarItem = { itemEditado ->
-                        listaDeItens = listaDeItens.map { itemAtual ->
-                            if(itemAtual == itemEditado){
-                                itemEditado.copy(texto = itemEditado.texto)
-                            } else{
-                                itemAtual
-                            }
-                        }
+        ListaDeItems(
+            listaDeItens = listaDeItens,
+            aoMudarStatus = {
+                listaDeItens = listaDeItens.map { itemSelecionado ->
+                    if (it == itemSelecionado) {
+                        it.copy(foiComprado = !it.foiComprado)
+                    } else {
+                        it
                     }
-                )
+                }
+            },
+            aoRemoverItem = { itemRemovido ->
+                listaDeItens = listaDeItens - itemRemovido
+            },
+            aoEditarItem = { itemEditado ->
+                listaDeItens = listaDeItens.map { itemAtual ->
+                    if (itemAtual == itemEditado) {
+                        itemEditado.copy(texto = itemEditado.texto)
+                    } else {
+                        itemAtual
+                    }
+                }
             }
-        }
+        )
         Titulo(texto = "Comprado")
 
 
@@ -113,33 +110,18 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
 @Composable
 fun ListaDeItems(
     listaDeItens: List<ItemCompra>,
+    aoMudarStatus: (item: ItemCompra) -> Unit = {},
+    aoRemoverItem: (item: ItemCompra) -> Unit,
+    aoEditarItem: (item: ItemCompra) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
         listaDeItens.forEach { item ->
             ItemDaLista(
                 item = item,
-                aoMudarStatus = {
-                    listaDeItens = listaDeItens.map { itemSelecionado ->
-                        if (it == itemSelecionado) {
-                            it.copy(foiComprado = !it.foiComprado)
-                        } else {
-                            it
-                        }
-                    }
-                },
-                aoRemoverItem = { itemRemovido ->
-                    listaDeItens = listaDeItens - itemRemovido
-                },
-                aoEditarItem = { itemEditado ->
-                    listaDeItens = listaDeItens.map { itemAtual ->
-                        if (itemAtual == itemEditado) {
-                            itemEditado.copy(texto = itemEditado.texto)
-                        } else {
-                            itemAtual
-                        }
-                    }
-                }
+                aoMudarStatus = aoMudarStatus,
+                aoRemoverItem = aoRemoverItem,
+                aoEditarItem = aoEditarItem
             )
         }
     }

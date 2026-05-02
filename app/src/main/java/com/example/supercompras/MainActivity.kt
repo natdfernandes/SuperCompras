@@ -60,7 +60,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
 fun ListaDeCompras(modifier: Modifier = Modifier) {
     var listaDeItens by rememberSaveable {mutableStateOf(listOf<ItemCompra>())}
@@ -101,9 +100,35 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
                 }
             }
         )
+
         Titulo(texto = "Comprado")
 
-
+        if (listaDeItens.any { it.foiComprado }) {
+            ListaDeItems(
+                lista = listaDeItens.filter { it.foiComprado},
+                aoMudarStatus = { itemSelecionado ->
+                    listaDeItens = listaDeItens.map { itemMap ->
+                        if (itemSelecionado == itemMap) {
+                            itemSelecionado.copy(foiComprado = !itemSelecionado.foiComprado)
+                        } else {
+                            itemMap
+                        }
+                    }
+                },
+                aoRemoverItem = { itemRemovido ->
+                    listaDeItens = listaDeItens - itemRemovido
+                },
+                aoEditarItem = { itemEditado ->
+                    listaDeItens = listaDeItens.map { itemAtual ->
+                        if (itemAtual == itemEditado) {
+                            itemAtual.copy(texto = itemEditado.texto)
+                        } else {
+                            itemAtual
+                        }
+                    }
+                }
+            )
+        }
     }
     
 }

@@ -93,6 +93,7 @@ fun ListaDeCompras(modifier: Modifier = Modifier, viewModel: SuperComprasViewMod
             Titulo(
                 texto = "Lista de compras"
             )
+            Spacer(modifier = Modifier.height(24.dp))
         }
         ListaDeItems(
             lista = listaDeItens.filter { !it.foiComprado },
@@ -107,7 +108,9 @@ fun ListaDeCompras(modifier: Modifier = Modifier, viewModel: SuperComprasViewMod
             }
         )
         item {
+            Spacer(modifier = Modifier.height(40.dp))
             Titulo(texto = "Comprado")
+            Spacer(modifier = Modifier.height(24.dp))
         }
         if (listaDeItens.any { it.foiComprado }) {
             ListaDeItems(

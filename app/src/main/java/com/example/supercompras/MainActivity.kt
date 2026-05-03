@@ -77,7 +77,7 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
             texto = "Lista de compras"
         )
         ListaDeItems(
-            lista = listaDeItens,
+            lista = listaDeItens.filter { !it.foiComprado },
             aoMudarStatus = { itemSelecionado ->
                 listaDeItens = listaDeItens.map { itemMap ->
                     if (itemSelecionado == itemMap) {

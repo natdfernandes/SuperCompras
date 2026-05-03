@@ -210,6 +210,7 @@ fun ItemDaLista(
         ) {
             var textoEditado by rememberSaveable {mutableStateOf(item.texto) }
             var edicao by rememberSaveable {mutableStateOf(value = false)}
+
             Checkbox(
                 checked = item.foiComprado,
                 onCheckedChange = {
@@ -219,12 +220,7 @@ fun ItemDaLista(
                     .padding(end = 8.dp)
                     .requiredSize(24.dp)
             )
-            Text(
-                text = item.texto,
-                modifier = Modifier.weight(1f),
-                style = Typography.bodyMedium,
-                textAlign = TextAlign.Start
-            )
+
             if (edicao) {
                 OutlinedTextField(
                     value = textoEditado,
@@ -241,6 +237,13 @@ fun ItemDaLista(
                 ){
                     Icone(Icons.Default.Done, modifier = Modifier.size(16.dp))
                 }
+            } else {
+                Text(
+                    text = item.texto,
+                    modifier = Modifier.weight(1f),
+                    style = Typography.bodyMedium,
+                    textAlign = TextAlign.Start
+                )
             }
 
             IconButton(

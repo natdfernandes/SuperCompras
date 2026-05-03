@@ -1,5 +1,6 @@
 package com.example.supercompras
 
+import android.content.ClipData
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -49,6 +51,9 @@ import com.example.supercompras.ui.theme.Typography
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.collections.map
+import android.content.ClipData.Item
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.LazyListScope
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,20 +72,22 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ListaDeCompras(modifier: Modifier = Modifier) {
-    var listaDeItens by rememberSaveable {mutableStateOf(listOf<ItemCompra>())}
-    Column(
+    var listaDeItens by rememberSaveable { mutableStateOf(listOf<ItemCompra>()) }
+    LazyColumn(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
-        ImagemTopo()
-        AdicionarItem(aoSalvarItem = { novoItem ->
-            listaDeItens = listaDeItens + novoItem
-        })
-        Spacer(modifier = Modifier.height(48.dp))
-        Titulo(
-            texto = "Lista de compras"
-        )
+        item {
+            ImagemTopo()
+            AdicionarItem(aoSalvarItem = { novoItem ->
+                listaDeItens = listaDeItens + novoItem
+            })
+            Spacer(modifier = Modifier.height(48.dp))
+            Titulo(
+                texto = "Lista de compras"
+            )
+        }
         ListaDeItems(
             lista = listaDeItens.filter { !it.foiComprado },
             aoMudarStatus = { itemSelecionado ->
@@ -105,12 +112,12 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
                 }
             }
         )
-
-        Titulo(texto = "Comprado")
-
+        item {
+            Titulo(texto = "Comprado")
+        }
         if (listaDeItens.any { it.foiComprado }) {
             ListaDeItems(
-                lista = listaDeItens.filter { it.foiComprado},
+                lista = listaDeItens.filter { it.foiComprado },
                 aoMudarStatus = { itemSelecionado ->
                     listaDeItens = listaDeItens.map { itemMap ->
                         if (itemSelecionado == itemMap) {
@@ -135,20 +142,18 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
             )
         }
     }
-    
+
 }
-@Composable
-fun ListaDeItems(
+
+fun LazyListScope.ListaDeItems(
     lista: List<ItemCompra>,
     aoMudarStatus: (item: ItemCompra) -> Unit = {},
     aoRemoverItem: (item: ItemCompra) -> Unit,
-    aoEditarItem: (item: ItemCompra, novoTexto: String) -> Unit = {_, _ ->},
-    modifier: Modifier = Modifier
+    aoEditarItem: (item: ItemCompra, novoTexto: String) -> Unit = { _, _ -> },
 ) {
-    Column(modifier = modifier) {
-        lista.forEach { item ->
+    items(lista.size) {index ->
             ItemDaLista(
-                item = item,
+                item = lista[index],
                 aoMudarStatus = aoMudarStatus,
                 aoRemoverItem = aoRemoverItem,
                 aoEditarItem = aoEditarItem
@@ -156,7 +161,6 @@ fun ListaDeItems(
         }
     }
 
-}
 @Composable
 fun AdicionarItem(aoSalvarItem: (item: ItemCompra) -> Unit, modifier: Modifier = Modifier) {
     var texto by rememberSaveable { mutableStateOf("") }
@@ -182,13 +186,15 @@ fun AdicionarItem(aoSalvarItem: (item: ItemCompra) -> Unit, modifier: Modifier =
         onClick = {
             aoSalvarItem(ItemCompra(texto, false, getDataHora()))
             texto = ""
-                  },
-        modifier = modifier) {
+        },
+        modifier = modifier
+    ) {
         Text(
             text = "Salvar item",
             color = Color.White,
             style = Typography.bodyLarge,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp))
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+        )
     }
 }
 
@@ -197,6 +203,7 @@ fun getDataHora(): String {
     val dataHoraFormata = SimpleDateFormat("EEEE (dd/MM/yyyy) 'às' HH:mm", Locale("pt", "BR"))
     return dataHoraFormata.format(dataHoraAtual)
 }
+
 @Composable
 fun Titulo(texto: String, modifier: Modifier = Modifier) {
     Text(text = texto, style = typography.headlineLarge, modifier = modifier)
@@ -207,7 +214,7 @@ fun ItemDaLista(
     item: ItemCompra,
     aoMudarStatus: (item: ItemCompra) -> Unit = {},
     aoRemoverItem: (item: ItemCompra) -> Unit = {},
-    aoEditarItem: (item: ItemCompra, novoTexto: String) -> Unit = {_, _ -> },
+    aoEditarItem: (item: ItemCompra, novoTexto: String) -> Unit = { _, _ -> },
     modifier: Modifier = Modifier
 ) {
     Column(verticalArrangement = Arrangement.Top, modifier = modifier) {
@@ -215,8 +222,8 @@ fun ItemDaLista(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            var textoEditado by rememberSaveable {mutableStateOf(item.texto) }
-            var edicao by rememberSaveable {mutableStateOf(value = false)}
+            var textoEditado by rememberSaveable { mutableStateOf(item.texto) }
+            var edicao by rememberSaveable { mutableStateOf(value = false) }
 
             Checkbox(
                 checked = item.foiComprado,
@@ -241,7 +248,7 @@ fun ItemDaLista(
                         aoEditarItem(item, textoEditado)
                         edicao = false
                     }
-                ){
+                ) {
                     Icone(Icons.Default.Done, modifier = Modifier.size(16.dp))
                 }
             } else {
@@ -265,8 +272,8 @@ fun ItemDaLista(
             }
             IconButton(
                 onClick = {
-                          edicao = true
-                          },
+                    edicao = true
+                },
             ) {
                 Icone(Icons.Default.Edit, modifier = Modifier.size(16.dp))
             }

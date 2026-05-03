@@ -30,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -205,6 +206,8 @@ fun ItemDaLista(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
+            var textoEditado by rememberSaveable {mutableStateOf(item.texto) }
+            var edicao by rememberSaveable {mutableStateOf(value = false)}
             Checkbox(
                 checked = item.foiComprado,
                 onCheckedChange = {
@@ -220,6 +223,15 @@ fun ItemDaLista(
                 style = Typography.bodyMedium,
                 textAlign = TextAlign.Start
             )
+            if (edicao) {
+                OutlinedTextField(
+                    value = textoEditado,
+                    onValueChange = { textoEditado = it },
+                    modifier = Modifier.weight(1f),
+                    singleLine = true,
+                    shape = RoundedCornerShape(24.dp)
+                )
+            }
             IconButton(
                 onClick = { aoRemoverItem(item) },
                 modifier = Modifier.padding(end = 8.dp)

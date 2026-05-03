@@ -13,6 +13,33 @@ class SuperComprasViewModel : ViewModel() {
         _listaDeItens.update { lista ->
             lista + item
         }
-        listaDeItens = listaDeItens + novoItem
+    }
+    fun removerItem(item: ItemCompra){
+        _listaDeItens.update { lista ->
+            lista - item
+        }
+    }
+    fun editarItem(itemEditado: ItemCompra, novotexto: String){
+        _listaDeItens.update { lista ->
+            lista.map{ itemAtual ->
+                if (itemAtual == itemEditado){
+                    itemAtual.copy(texto = novotexto)
+                }else {
+                    itemAtual
+                }
+            }
+        }
+    }
+
+    fun mudarStatus(itemSelecionado: ItemCompra){
+        _listaDeItens.update{lista ->
+            lista.map{ itemMap ->
+                if (itemSelecionado == itemMap){
+                    itemSelecionado.copy(foiComprado = !itemSelecionado.foiComprado)
+                }else{
+                    itemMap
+                }
+            }
+        }
     }
 }

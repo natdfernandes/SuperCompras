@@ -206,7 +206,7 @@ fun ItemDaLista(
             horizontalArrangement = Arrangement.Start
         ) {
             Checkbox(
-                checked = false,
+                checked = item.foiComprado,
                 onCheckedChange = {
                     aoMudarStatus(item)
                 },

@@ -93,10 +93,10 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
             aoRemoverItem = { itemRemovido ->
                 listaDeItens = listaDeItens - itemRemovido
             },
-            aoEditarItem = { itemEditado ->
+            aoEditarItem = { itemEditado, novoTexto ->
                 listaDeItens = listaDeItens.map { itemAtual ->
                     if (itemAtual == itemEditado) {
-                        itemAtual.copy(texto = itemEditado.texto)
+                        itemAtual.copy(texto = novoTexto)
                     } else {
                         itemAtual
                     }
@@ -121,10 +121,10 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
                 aoRemoverItem = { itemRemovido ->
                     listaDeItens = listaDeItens - itemRemovido
                 },
-                aoEditarItem = { itemEditado ->
+                aoEditarItem = { itemEditado, novoTexto ->
                     listaDeItens = listaDeItens.map { itemAtual ->
                         if (itemAtual == itemEditado) {
-                            itemAtual.copy(texto = itemEditado.texto)
+                            itemAtual.copy(texto = novoTexto)
                         } else {
                             itemAtual
                         }
@@ -140,7 +140,7 @@ fun ListaDeItems(
     lista: List<ItemCompra>,
     aoMudarStatus: (item: ItemCompra) -> Unit = {},
     aoRemoverItem: (item: ItemCompra) -> Unit,
-    aoEditarItem: (item: ItemCompra) -> Unit = {},
+    aoEditarItem: (item: ItemCompra, novoTexto: String) -> Unit = {_, _ ->},
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -200,7 +200,7 @@ fun ItemDaLista(
     item: ItemCompra,
     aoMudarStatus: (item: ItemCompra) -> Unit = {},
     aoRemoverItem: (item: ItemCompra) -> Unit = {},
-    aoEditarItem: (item: ItemCompra) -> Unit = {},
+    aoEditarItem: (item: ItemCompra, novoTexto: String) -> Unit = {_, _ -> },
     modifier: Modifier = Modifier
 ) {
     Column(verticalArrangement = Arrangement.Top, modifier = modifier) {
@@ -235,7 +235,7 @@ fun ItemDaLista(
                 )
                 IconButton(
                     onClick = {
-                        aoEditarItem(item)
+                        aoEditarItem(item, textoEditado)
                         edicao = false
                     }
                 ){
@@ -255,7 +255,6 @@ fun ItemDaLista(
             }
             IconButton(
                 onClick = {
-                    aoEditarItem(item)
                           edicao = true
                           },
             ) {

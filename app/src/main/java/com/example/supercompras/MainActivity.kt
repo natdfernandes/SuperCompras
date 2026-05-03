@@ -245,20 +245,19 @@ fun ItemDaLista(
 
             IconButton(
                 onClick = { aoRemoverItem(item) },
-                modifier = Modifier.padding(end = 8.dp)
+                modifier = Modifier.padding(end = 8.dp).size(16.dp)
             ) {
                 Icone(
-                    Icons.Default.Delete,
-                    modifier = Modifier
-                        .size(16.dp)
+                    Icons.Default.Delete
                 )
             }
             IconButton(
                 onClick = {
                     edicao = true
                 },
+                modifier = Modifier.size(16.dp)
             ) {
-                Icone(Icons.Default.Edit, modifier = Modifier.size(16.dp))
+                Icone(Icons.Default.Edit)
             }
         }
         Text(

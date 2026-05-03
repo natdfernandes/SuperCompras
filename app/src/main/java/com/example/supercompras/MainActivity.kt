@@ -197,7 +197,12 @@ fun getDataHora(): String {
 
 @Composable
 fun Titulo(texto: String, modifier: Modifier = Modifier) {
-    Text(text = texto, style = typography.headlineLarge, modifier = modifier.padding(bottom = 8.dp))
+    Text(
+        text = texto,
+        style = typography.headlineLarge,
+        modifier = modifier.padding(bottom = 8.dp).fillMaxWidth(),
+        textAlign = TextAlign.Left
+    )
     LinhaPontilhada(modifier = modifier)
 }
 

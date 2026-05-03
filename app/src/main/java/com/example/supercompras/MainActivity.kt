@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import com.example.supercompras.ui.theme.Marinho
 import com.example.supercompras.ui.theme.SuperComprasTheme
 import com.example.supercompras.ui.theme.Typography
+import java.text.SimpleDateFormat
 import kotlin.collections.map
 
 class MainActivity : ComponentActivity() {
@@ -72,8 +73,8 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
         modifier = modifier
     ) {
         ImagemTopo()
-        AdicionarItem(aoSalvarItem = { textNovo ->
-            listaDeItens = listaDeItens + ItemCompra(textNovo)
+        AdicionarItem(aoSalvarItem = { novoItem ->
+            listaDeItens = listaDeItens + novoItem
         })
         Spacer(modifier = Modifier.height(48.dp))
         Titulo(
@@ -156,11 +157,11 @@ fun ListaDeItems(
 
 }
 @Composable
-fun AdicionarItem(aoSalvarItem: (texto: String) -> Unit, modifier: Modifier = Modifier) {
-    var texto = rememberSaveable { mutableStateOf("") }
+fun AdicionarItem(aoSalvarItem: (item: ItemCompra) -> Unit, modifier: Modifier = Modifier) {
+    var texto by rememberSaveable { mutableStateOf("") }
     OutlinedTextField(
-        value = texto.value,
-        onValueChange = { texto.value = it },
+        value = texto,
+        onValueChange = { texto = it },
         placeholder = {
             Text(
                 text = "Digite o item que deseja adicionar",
@@ -178,8 +179,8 @@ fun AdicionarItem(aoSalvarItem: (texto: String) -> Unit, modifier: Modifier = Mo
     Button(
         shape = RoundedCornerShape(24.dp),
         onClick = {
-            aoSalvarItem(texto.value)
-            texto.value = ""
+            aoSalvarItem(ItemCompra(texto, false, getDataHora()))
+            texto = ""
                   },
         modifier = modifier) {
         Text(
@@ -190,6 +191,11 @@ fun AdicionarItem(aoSalvarItem: (texto: String) -> Unit, modifier: Modifier = Mo
     }
 }
 
+fun getDataHora(): String {
+    val dataHoraAtual = System.currentTimeMillis()
+    val dataHoraFormata = SimpleDateFormat("EEEE (dd/MM/yyyy) `às` HH:mm")
+    return dataHoraFormata.format(dataHoraAtual)
+}
 @Composable
 fun Titulo(texto: String, modifier: Modifier = Modifier) {
     Text(text = texto, style = typography.headlineLarge, modifier = modifier)
@@ -310,7 +316,7 @@ private fun AdicionarItemPreview() {
 @Composable
 private fun ItemDaListaPreview() {
     SuperComprasTheme {
-        ItemDaLista(item = ItemCompra(texto = "Suco"))
+        ItemDaLista(item = ItemCompra(texto = "Suco", false, datahora = "Segunda-feira"))
     }
 }
 
@@ -351,5 +357,6 @@ fun GreetingPreview() {
 
 data class ItemCompra(
     val texto: String,
-    var foiComprado: Boolean = false
+    var foiComprado: Boolean = false,
+    val datahora: String
 )

@@ -53,10 +53,15 @@ import java.util.Locale
 import kotlin.collections.map
 import android.content.ClipData.Item
 import androidx.activity.viewModels
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.PathEffect
+import com.example.supercompras.ui.theme.Coral
+import java.time.Clock.offset
 
 class MainActivity : ComponentActivity() {
 
@@ -192,7 +197,22 @@ fun getDataHora(): String {
 
 @Composable
 fun Titulo(texto: String, modifier: Modifier = Modifier) {
-    Text(text = texto, style = typography.headlineLarge, modifier = modifier)
+    Text(text = texto, style = typography.headlineLarge, modifier = modifier.padding(bottom = 8.dp))
+    LinhaPontilhada(modifier = modifier)
+}
+
+@Composable
+fun LinhaPontilhada(modifier: Modifier = Modifier) {
+    val pathEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 5f), 2.5f)
+    Canvas(modifier = modifier.fillMaxWidth()){
+        drawLine(
+            color = Coral,
+            pathEffect = pathEffect,
+            start = Offset(0f , 0f),
+            end = Offset(size.width, 0f),
+            strokeWidth = 4f
+        )
+    }
 }
 
 @Composable
@@ -248,7 +268,9 @@ fun ItemDaLista(
 
             IconButton(
                 onClick = { aoRemoverItem(item) },
-                modifier = Modifier.padding(end = 8.dp).size(16.dp)
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .size(16.dp)
             ) {
                 Icone(
                     Icons.Default.Delete

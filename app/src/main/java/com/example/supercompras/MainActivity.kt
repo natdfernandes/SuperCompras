@@ -55,6 +55,7 @@ import android.content.ClipData.Item
 import androidx.activity.viewModels
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.runtime.collectAsState
 
 class MainActivity : ComponentActivity() {
 
@@ -76,7 +77,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ListaDeCompras(modifier: Modifier = Modifier, viewModel: SuperComprasViewModel) {
-    var listaDeItens by rememberSaveable { mutableStateOf(listOf<ItemCompra>()) }
+    val listaDeItens by viewModel.listaDeItens.collectAsState()
     LazyColumn(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -85,7 +86,7 @@ fun ListaDeCompras(modifier: Modifier = Modifier, viewModel: SuperComprasViewMod
         item {
             ImagemTopo()
             AdicionarItem(aoSalvarItem = { novoItem ->
-                listaDeItens = listaDeItens + novoItem
+                viewModel.adicionarItem(novoItem)
             })
             Spacer(modifier = Modifier.height(48.dp))
             Titulo(

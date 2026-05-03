@@ -47,6 +47,7 @@ import com.example.supercompras.ui.theme.Marinho
 import com.example.supercompras.ui.theme.SuperComprasTheme
 import com.example.supercompras.ui.theme.Typography
 import java.text.SimpleDateFormat
+import java.util.Locale
 import kotlin.collections.map
 
 class MainActivity : ComponentActivity() {
@@ -193,7 +194,7 @@ fun AdicionarItem(aoSalvarItem: (item: ItemCompra) -> Unit, modifier: Modifier =
 
 fun getDataHora(): String {
     val dataHoraAtual = System.currentTimeMillis()
-    val dataHoraFormata = SimpleDateFormat("EEEE (dd/MM/yyyy) `às` HH:mm")
+    val dataHoraFormata = SimpleDateFormat("EEEE (dd/MM/yyyy) 'às' HH:mm", Locale("pt", "BR"))
     return dataHoraFormata.format(dataHoraAtual)
 }
 @Composable
@@ -271,7 +272,7 @@ fun ItemDaLista(
             }
         }
         Text(
-            "Segunda-feira (31/10/2026) às 08:30",
+            item.datahora,
             Modifier.padding(top = 8.dp),
             style = Typography.labelSmall,
 

@@ -53,6 +53,7 @@ import java.util.Locale
 import kotlin.collections.map
 import android.content.ClipData.Item
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.collectAsState
@@ -81,7 +82,7 @@ fun ListaDeCompras(modifier: Modifier = Modifier, viewModel: SuperComprasViewMod
     LazyColumn(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
+        modifier = modifier.padding(horizontal = 16.dp)
     ) {
         item {
             ImagemTopo()
@@ -162,19 +163,20 @@ fun AdicionarItem(aoSalvarItem: (item: ItemCompra) -> Unit, modifier: Modifier =
         shape = RoundedCornerShape(24.dp)
     )
 
+
     Button(
         shape = RoundedCornerShape(24.dp),
         onClick = {
             aoSalvarItem(ItemCompra(texto, false, getDataHora()))
             texto = ""
         },
-        modifier = modifier
+        modifier = modifier,
+        contentPadding = PaddingValues(16.dp, 12.dp)
     ) {
         Text(
             text = "Salvar item",
             color = Color.White,
             style = Typography.bodyLarge,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
         )
     }
 }
